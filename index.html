@@ -76,4 +76,43 @@ document.getElementById('enquiryForm').addEventListener('submit',e=>{
  const toast=document.getElementById('toast');toast.textContent='Enquiry summary prepared. Copy it below and send it to your shop contact: '+summary;toast.classList.add('show');
 });
 </script>
+ 
+<style>
+.category-card { cursor: pointer; }
+.product-list {
+  display: none;
+  background: #e9f8f5;
+  padding: 14px 14px 14px 32px;
+  border-radius: 12px;
+  color: #123047;
+}
+.category-card.expanded .product-list {
+  display: block;
+}
+</style>
+<script>
+const fishLists = [
+  ["Goldfish","Betta Fish","Guppy","Molly","Angelfish","Neon Tetra"],
+  ["Starter Tank","Family Tank","Premium Display Tank","Rimless Tank"],
+  ["Internal Filter","Sponge Filter","Canister Filter","Air Pump"],
+  ["LED Light","Heater","Thermometer","Air Stone"],
+  ["Java Fern","Anubias","Aquatic Moss","Gravel","Decorative Rocks"],
+  ["Fish Flakes","Fish Pellets","Betta Food","Water Conditioner","Fish Net"]
+];
+document.querySelectorAll(".category-card").forEach((card,i)=>{
+  if(!fishLists[i]) return;
+  const ul=document.createElement("ul");
+  ul.className="product-list";
+  fishLists[i].forEach(name=>{
+    const li=document.createElement("li");
+    li.textContent=name;
+    ul.appendChild(li);
+  });
+  card.appendChild(ul);
+  card.addEventListener("click",()=>{
+    card.classList.toggle("expanded");
+  });
+});
+</script>
+
 </body></html>
