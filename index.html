@@ -115,4 +115,38 @@ document.querySelectorAll(".category-card").forEach((card,i)=>{
 });
 </script>
 
+<style>
+.order-confirmation {
+  display: none;
+  margin: 20px 0;
+  padding: 22px;
+  background: #e9f8f1;
+  border: 1px solid #b6e6cf;
+  border-radius: 16px;
+  color: #123047;
+}
+.order-confirmation.show {
+  display: block;
+}
+.order-confirmation h3 {
+  color: #16834a;
+  margin-top: 0;
+}
+</style>
+
+<div id="orderConfirmation" class="order-confirmation" role="status">
+  <h3>✓ Order Request Received!</h3>
+  <p>Thank you for choosing Aquarium Shop.</p>
+  <p>Your enquiry has been submitted successfully.</p>
+  <p>Our team will contact you to confirm product availability, pricing and delivery.</p>
+</div>
+
+<script>
+document.getElementById("enquiryForm").addEventListener("submit", function() {
+  const confirmation = document.getElementById("orderConfirmation");
+  confirmation.classList.add("show");
+  confirmation.scrollIntoView({ behavior: "smooth", block: "center" });
+});
+</script>
+
 </body></html>
