@@ -99,20 +99,77 @@ const fishLists = [
   ["Java Fern","Anubias","Aquatic Moss","Gravel","Decorative Rocks"],
   ["Fish Flakes","Fish Pellets","Betta Food","Water Conditioner","Fish Net"]
 ];
+
+const prices = [150,250,80,100,300,60,999,1499,4999,2999,250,180,899,350,199,120,250,80,150,100,120,180,220,90,150,200,100,80,120,60];
+
+let cart = [];
+
 document.querySelectorAll(".category-card").forEach((card,i)=>{
   if(!fishLists[i]) return;
   const ul=document.createElement("ul");
   ul.className="product-list";
-  fishLists[i].forEach(name=>{
+
+  fishLists[i].forEach((name,j)=>{
     const li=document.createElement("li");
-    li.textContent=name;
+    const price=prices[(i*6+j)%prices.length];
+
+    li.style.margin="10px 0";
+    li.innerHTML=`${name} — ₹${price} `;
+
+    const btn=document.createElement("button");
+    btn.textContent="Add";
+    btn.style.cssText="margin-left:8px;padding:6px 12px;border:0;border-radius:8px;background:#005b46;color:white;";
+    btn.addEventListener("click",(e)=>{
+      e.stopPropagation();
+      const found=cart.find(p=>p.name===name);
+      if(found) found.qty++;
+      else cart.push({name,price,qty:1});
+      renderCart();
+    });
+
+    li.appendChild(btn);
     ul.appendChild(li);
   });
+
   card.appendChild(ul);
   card.addEventListener("click",()=>{
     card.classList.toggle("expanded");
   });
 });
+
+const cartBox=document.createElement("div");
+cartBox.style.cssText="position:fixed;bottom:12px;right:12px;z-index:9999;background:#fff;color:#123047;padding:12px;border-radius:12px;max-width:90%;max-height:45vh;overflow:auto;box-shadow:0 2px 14px #0005;";
+document.body.appendChild(cartBox);
+
+function renderCart(){
+  cartBox.innerHTML="<b>🛒 Your Cart</b>";
+  let total=0;
+  cart.forEach((p,i)=>{
+    total+=p.price*p.qty;
+    const row=document.createElement("div");
+    row.style.margin="8px 0";
+    row.textContent=`${p.name} ₹${p.price} × ${p.qty} `;
+
+    ["−","+","Remove"].forEach((label)=>{
+      const b=document.createElement("button");
+      b.textContent=label;
+      b.style.marginLeft="4px";
+      b.onclick=()=>{
+        if(label==="+") p.qty++;
+        if(label==="−") p.qty--;
+        if(label==="Remove"||p.qty<=0) cart.splice(i,1);
+        renderCart();
+      };
+      row.appendChild(b);
+    });
+    cartBox.appendChild(row);
+  });
+  const sum=document.createElement("p");
+  sum.textContent="Total: ₹"+total;
+  cartBox.appendChild(sum);
+}
+renderCart();
+  
 </script>
 
 <style>
